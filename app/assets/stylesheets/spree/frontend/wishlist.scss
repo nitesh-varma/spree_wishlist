@@ -5,6 +5,15 @@
 #wishlist_header {
   h1, div {
     float: left;
-    width: 30%;
+    width: 27%;
+  }
+  .accessibility {
+    width: 40%;
+  }
+}
+
+#wishlist {
+  input[type=number] {
+    max-width: 4.5em;
   }
 }
