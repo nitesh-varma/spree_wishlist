@@ -2,9 +2,11 @@
   <div id="wishlist_header" class="row">
     <h1><%= @wishlist.name %></h1>
     <% if @wishlist.user == spree_current_user %>
-      <div id="manage_wishlist_links">
-        <%= link_to Spree.t(:edit_wishlist), edit_wishlist_path(@wishlist), class: 'button' %>
-      </div>
+      <% unless ENV['SINGLE_WISHLIST'] %>
+        <div id="manage_wishlist_links">
+          <%= link_to Spree.t(:edit_wishlist), edit_wishlist_path(@wishlist), class: 'button' %>
+        </div>
+      <% end %>
       <div class="accessibility"><%= render partial: 'accessibility' %></div>
     <% end %>
   </div>
@@ -45,7 +47,7 @@
               </div>
               <%= link_to Spree.t(:add_to_cart), '#', onclick: '$(this).parent().submit(); return false;', class: 'btn btn-success form-control' %>
             <% end %>
-            <% if false && spree_current_user.wishlists.count > 1 %>
+            <% if !ENV['SINGLE_WISHLIST'] && spree_current_user.wishlists.count > 1 %>
               <%= Spree.t(:move_to_another_wishlist) %>:
               <%= form_for wish do |f| %>
                 <%= f.select :wishlist_id, spree_current_user.wishlists.map{|wl| [wl.name, wl.id]} %>
@@ -101,7 +103,7 @@
   </div>
   <div class='row'>
     <div class="footer_links" data-hook="wishlist_footer_links">
-    <% if false && @wishlist.user == spree_current_user %>
+    <% if !ENV['SINGLE_WISHLIST'] && @wishlist.user == spree_current_user %>
       <%= link_to Spree.t(:create_new_wishlist), new_wishlist_path, class: 'btn btn-default' %>
     <% end %>
     <%= link_to Spree.t(:continue_shopping), products_path, class: 'btn btn-default' %>
